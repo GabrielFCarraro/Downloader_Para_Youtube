@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import filedialog
 from pytube import YouTube,Playlist
 import PIL
 import pyperclip
@@ -20,47 +21,85 @@ fundo_janela.pack()
 url = 0
 resolucao = 0
 quality = 0
+path = 'Baixados'
 
 #=============================================================DEFS=============================================================#
 
+#def path
+def search_path():
+    global path
+    directory = filedialog.askdirectory()
+    path = directory
 
 #def qualidades
 def mp3():
     global quality
+    FORMATO = StringVar()
+    entry_qual = Entry(janela, textvariable = FORMATO, border = 0, font = "Serif 13 ", fg = "white", bg = '#2e81a6')
+    entry_qual.place(x = 512, y = 210)
+    FORMATO.set('Formato: MP3')
     quality = 'mp3'
 
 def mp4():
     global quality
+    FORMATO = StringVar()
+    entry_qual = Entry(janela, textvariable = FORMATO, border = 0, font = "Serif 13 ", fg = "white", bg = '#2e81a6')
+    entry_qual.place(x = 512, y = 210)
+    FORMATO.set('Formato: MP4')
     quality = 'mp4'   
 
 #def resoluções
 def quatrok():
     global resolucao
+    RESOLUCAAO = StringVar()
+    entry_res = Entry(janela, textvariable = RESOLUCAAO, border = 0, font = 'Serif 11', fg = 'white', bg = '#2e81a6')
+    entry_res.place(x = 512, y = 233)
+    RESOLUCAAO.set('Resolução: 2160p')
     resolucao = str('2160p')
 
 
 def qhd():
     global resolucao
+    RESOLUCAAO = StringVar()
+    entry_res = Entry(janela, textvariable = RESOLUCAAO, border = 0, font = 'Serif 11', fg = 'white', bg = '#2e81a6')
+    entry_res.place(x = 512, y = 233)
+    RESOLUCAAO.set('Resolução: 1440p')   
     resolucao = str('1440p')
 
 
 def fhd():
     global resolucao
+    RESOLUCAAO = StringVar()
+    entry_res = Entry(janela, textvariable = RESOLUCAAO, border = 0, font = 'Serif 11', fg = 'white', bg = '#2e81a6')
+    entry_res.place(x = 512, y = 233)
+    RESOLUCAAO.set('Resolução: 1080p')
     resolucao = str('1080p')
 
 
 def hd():
     global resolucao
+    RESOLUCAAO = StringVar()
+    entry_res = Entry(janela, textvariable = RESOLUCAAO, border = 0, font = 'Serif 11', fg = 'white', bg = '#2e81a6')
+    entry_res.place(x = 512, y = 233)
+    RESOLUCAAO.set('Resolução: 720p')
     resolucao = str('720p')
 
 
 def tres_seis_zero():
     global resolucao
+    RESOLUCAAO = StringVar()
+    entry_res = Entry(janela, textvariable = RESOLUCAAO, border = 0, font = 'Serif 11', fg = 'white', bg = '#2e81a6')
+    entry_res.place(x = 512, y = 233)
+    RESOLUCAAO.set('Resolução: 360p')
     resolucao = str('360p')
 
 
 def quatro_oito_zero():
     global resolucao
+    RESOLUCAAO = StringVar()
+    entry_res = Entry(janela, textvariable = RESOLUCAAO, border = 0, font = 'Serif 11', fg = 'white', bg = '#2e81a6')
+    entry_res.place(x = 512, y = 233)
+    RESOLUCAAO.set('Resolução: 460p')
     resolucao = str('480p')
 
 
@@ -68,21 +107,14 @@ def quatro_oito_zero():
 def download():
     url = str(entry_colar.get())
     yt = YouTube(url)
-    if "playlist" in entry_colar.get() and quality == 'mp4':
+    if quality == 'mp4': 
         stream = yt.streams.get_by_resolution(resolucao)
-        stream.download(output_path = 'playlist')
-    elif "playlist" in entry_colar.get() and quality == 'mp3':  
-        stream = yt.streams.get_audio_only()
-        stream.download(output_path = 'playlist')
+        stream.download(output_path = path)
     else:
-        if quality == 'mp4': 
-            stream = yt.streams.get_by_resolution(resolucao)
-            stream.download()
-        else:
-            stream = yt.streams.get_audio_only()
-            stream.download()   
+        stream = yt.streams.get_audio_only()
+        stream.download(output_path = path)   
     
-    
+   
 #COLOCAR ESCRITA NO ENTRY
 def entry_colar_click (event):
     if entry_colar.get() == 'Cole o link do video que deseja baixar':
@@ -99,12 +131,13 @@ def paste():
     colar = pyperclip.paste()
     CAMPOCOLAR.set(colar)
 
+
 #==========================================================BOTÕES E ETC=======================================================#
 
 #CAMPO COPY
 CAMPOCOLAR = StringVar()
-entry_colar = Entry(janela, textvariable = CAMPOCOLAR, border = 0, font = 'Serif 15', width = 37)
-entry_colar.place(x = 98, y = 73)
+entry_colar = Entry(janela, textvariable = CAMPOCOLAR, border = 0, font = 'Serif 15', width = 34)
+entry_colar.place(x = 140, y = 73)
 entry_colar.insert(0, 'Cole o link do video que deseja baixar')
 entry_colar.bind('<FocusIn>', entry_colar_click)
 entry_colar.bind('<FocusOut>', entry_colar_outclick)
@@ -116,12 +149,12 @@ btn_colar.place(x = 516, y = 70)
 
 #BOTÃO 4K
 bt_4k = PhotoImage(file = 'png/buttons/btn_4k.png')
-btn_4k = Button(janela, image = bt_4k, border = 0, height = 23, width = 70 )
+btn_4k = Button(janela, image = bt_4k, border = 0, height = 23, width = 70, command = quatrok )
 btn_4k.place(x = 8, y = 173)
 
 #BOTÃO 2,5K
 bt_2k = PhotoImage(file = 'png/buttons/btn_2k.png')
-btn_2k = Button(janela, image = bt_2k, border = 0, height = 23, width = 70)
+btn_2k = Button(janela, image = bt_2k, border = 0, height = 23, width = 70, command = qhd)
 btn_2k.place(x = 90, y = 173)
 
 #BOTÃO 1080P
@@ -158,6 +191,11 @@ btn_mp3.place(x = 571, y = 173)
 bt_down = PhotoImage(file = 'png/buttons/btn_download.png')
 btn_down = Button(janela, image = bt_down, border = 0, height = 36, width = 161, command = download)
 btn_down.place(x = 244, y = 274)
+
+#BOTÃO PATH
+bt_path  = PhotoImage(file = 'png/buttons/btn_path.png')
+btn_path = Button(janela, image = bt_path, border = 0, height = 32, width = 36, command = search_path)
+btn_path.place(x = 99, y = 70)
 
 
 janela.mainloop() 
